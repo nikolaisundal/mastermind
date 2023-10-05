@@ -334,7 +334,17 @@
 
 <h1 class="font-bold text-center py-10">M A S T E R M I N D</h1>
 <div class="bg-slate-100 max-w-xs sm:max-w-screen-sm mx-auto border-2 border-slate-900">
-	<h1>hei</h1>
+	<div class="flex justify-between">
+		<h1>hei</h1>
+		<a
+			href="https://www.wikihow.com/Play-Mastermind"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="underline"
+		>
+			how to play Mastermind
+		</a>
+	</div>
 	{#each boardState as row (row.id)}
 		<Row {row} on:colourChange={handleColourChange} on:updateResponse={handleUpdateResponse} />
 	{/each}

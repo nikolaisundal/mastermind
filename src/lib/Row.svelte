@@ -121,7 +121,7 @@
 			on:click={makeAttempt}
 			disabled={notEnoughPlacements}
 		>
-			<div class="flex flex-col items-center text-xs">
+			<div class="flex flex-col items-center text-xs font-bold">
 				<span>C</span>
 				<span>h</span>
 				<span>e</span>

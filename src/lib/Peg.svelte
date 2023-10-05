@@ -58,8 +58,8 @@
 						toggleSelect(null);
 					}}
 				>
-					<div class="{colourOption} hover:border-2 hover:border-black h-4 w-5 rounded-t-xl" />
-					<div class="{colourOption} hover:border-2 hover:border-black h-5 w-2" /></button
+					<div class="{colourOption} h-4 w-5 rounded-t-xl" />
+					<div class="{colourOption}  h-5 w-2" /></button
 				>
 			</div>
 		{/each}
