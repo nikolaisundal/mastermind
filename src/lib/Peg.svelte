@@ -1,12 +1,21 @@
 <script lang="ts">
-	const colours: string[] = [
+	import { settingsStore } from '$lib/settingsStore';
+
+	let numberOfColours: number = $settingsStore.numberOfColours;
+
+	const colours = [
 		'bg-red-600',
 		'bg-yellow-400',
 		'bg-green-600',
 		'bg-blue-700',
 		'bg-purple-600',
-		'bg-slate-500'
+		'bg-slate-500',
+		'bg-pink-500',
+		'bg-indigo-500',
+		'bg-teal-500'
 	];
+
+	let coloursWithinRange = colours.slice(0, numberOfColours);
 
 	export let active: boolean;
 	export let colour: string;
@@ -49,7 +58,7 @@
 {/if}
 {#if isSelected}
 	<div class="absolute top-24 left-0 w-full z-10 bg-slate-200 grid grid-cols-3 gap-x-2">
-		{#each colours as colourOption}
+		{#each coloursWithinRange as colourOption}
 			<div class="flex justify-center p-4">
 				<button
 					class=" h-10 w-10 hover:border-2 hover:border-black flex flex-col items-center"
@@ -66,21 +75,6 @@
 	</div>
 {/if}
 
-<!-- {#if isSelected}
-	<div class="absolute top-24 left-0 w-full z-10 bg-white grid grid-cols-3 gap-x-2">
-		{#each colours as colourOption}
-			<div class="flex justify-center p-4">
-				<button
-					class="peg-shape h-4 w-10 {colourOption} hover:border-2 hover:border-black"
-					on:click={(e) => {
-						selectColour(colourOption);
-						toggleSelect(null);
-					}}
-				/>
-			</div>
-		{/each}
-	</div>
-{/if} -->
 <style>
 	.peg-shape {
 		border-radius: 50% 50% 0 0;
