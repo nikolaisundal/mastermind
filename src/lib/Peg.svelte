@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { settingsStore } from '$lib/settingsStore';
+	import { slide, fade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 
 	let numberOfColours: number = $settingsStore.numberOfColours;
 
@@ -44,6 +46,7 @@
 		/>
 		{#if isSelected}
 			<div
+				transition:slide={{ delay: 50, duration: 300, axis: 'x', easing: quintOut }}
 				class=" w-0 h-0 z-40
 		border-l-[10px] border-l-transparent
 		border-b-[20px] border-b-white
@@ -57,7 +60,10 @@
 	/>
 {/if}
 {#if isSelected}
-	<div class="absolute top-24 left-0 w-full z-10 bg-slate-200 grid grid-cols-3 gap-x-2">
+	<div
+		transition:fade={{ duration: 200 }}
+		class="absolute top-24 left-0 w-full z-10 bg-slate-200 grid grid-cols-3 gap-x-2"
+	>
 		{#each coloursWithinRange as colourOption}
 			<div class="flex justify-center p-4">
 				<button

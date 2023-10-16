@@ -155,10 +155,11 @@
 
 <h1 class="font-bold text-center py-10">M A S T E R M I N D</h1>
 <div class="bg-slate-100 max-w-xs sm:max-w-screen-sm mx-auto border-2 border-slate-900">
-	<div class="space-y-2">
+	<div class="space-y-4 p-4">
 		<div>
 			<label for="attempts-slider">attempts:</label>
 			<input
+				class=""
 				type="range"
 				id="attempts-slider"
 				min="1"
@@ -199,6 +200,7 @@
 		</div>
 
 		<button
+			class="h-2/4 w-3/4 border-4"
 			on:click={() => {
 				boardState = generateBoardState(numberOfAttempts);
 				game = 'playing';
@@ -207,17 +209,6 @@
 		>
 	</div>
 
-	<div class="flex justify-between">
-		<h1>hei</h1>
-		<a
-			href="https://www.wikihow.com/Play-Mastermind"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="underline"
-		>
-			how to play Mastermind
-		</a>
-	</div>
 	{#each boardState as row (row.id)}
 		<Row {row} on:colourChange={handleColourChange} on:updateResponse={handleUpdateResponse} />
 	{/each}
@@ -251,6 +242,17 @@
 			</div>
 		</div>
 	{/if}
+	<div class="flex justify-between">
+		<h1>hei</h1>
+		<a
+			href="https://www.wikihow.com/Play-Mastermind"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="underline"
+		>
+			how to play Mastermind
+		</a>
+	</div>
 </div>
 
 <div class="h-96 bg-amber-100 flex justify-center items-end w-full"><p>Craated by me</p></div>
@@ -265,5 +267,35 @@
 	input[type='number'] {
 		-moz-appearance: textfield;
 		appearance: textfield;
+	}
+	input[type='range'] {
+		appearance: none;
+		-webkit-appearance: none;
+		width: 100%;
+		max-width: 200px;
+		height: 15px;
+		border-radius: 5px;
+		background: #d3d3d3;
+		outline: none;
+		opacity: 0.7;
+		-webkit-transition: 0.2s;
+		transition: opacity 0.2s;
+	}
+	input[type='range']::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 2.25rem;
+		height: 2.25rem;
+		border-radius: 50%;
+		background: #04aa6d;
+		cursor: pointer;
+	}
+
+	input[type='range']::-moz-range-thumb {
+		width: 25px;
+		height: 25px;
+		border-radius: 50%;
+		background: #04aa6d;
+		cursor: pointer;
 	}
 </style>
