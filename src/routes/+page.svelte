@@ -8,6 +8,9 @@
 	} from '../typeDefinitions/boardState';
 	import { solutionStore } from '$lib/solutionStore';
 	import { settingsStore } from '$lib/settingsStore';
+	import Settings from '$lib/Settings.svelte';
+	import HowToPlay from '$lib/HowToPlay.svelte';
+	import { slide, fade } from 'svelte/transition';
 
 	const colours = [
 		'bg-red-600',
@@ -20,6 +23,8 @@
 		'bg-indigo-500',
 		'bg-teal-500'
 	];
+
+	let isOpen = true;
 
 	let game: string = 'playing';
 
@@ -37,7 +42,7 @@
 	const generateRandomSolution = (): Colour[] => {
 		let solution: Colour[] = [];
 		let coloursWithinRange = colours.slice(0, numberOfColours);
-		console.log('Hello in here', numberOfColours);
+
 		for (let i = 0; i < 4; i++) {
 			const randomIndex = Math.floor(Math.random() * coloursWithinRange.length);
 			const randomColour = coloursWithinRange[randomIndex] as Colour;
@@ -121,6 +126,12 @@
 		});
 	};
 
+	const resetGame = () => {
+		boardState = generateBoardState(numberOfAttempts);
+		game = 'playing';
+		solutionStore.set(generateRandomSolution());
+	};
+
 	function updateAttempts(event: Event) {
 		const input = event.target as HTMLInputElement; // Type assertion for better type safety
 		let value = +input.value; // Convert string to number
@@ -141,84 +152,68 @@
 		let value = +input.value;
 		value = Math.max(2, Math.min(value, 9));
 		settingsStore.update((settings) => {
-			console.log('Before update:', settings);
 			settings.numberOfColours = value;
-			console.log('After update:', settings);
 			return settings;
 		});
 		solutionStore.set(generateRandomSolution());
 		boardState = generateBoardState(value);
 	};
 
-	$: console.log('SolutionStore', $solutionStore);
+	const toggleOpen = () => {
+		isOpen = !isOpen;
+		const section = document.getElementById('targetSection');
+		if (section && isOpen) {
+			section.scrollIntoView({ behavior: 'smooth' });
+		} else {
+			console.error('Element with id "targetSection" not found');
+		}
+	};
+
+	$: console.log("Since you're a web dev cheating is allowed. The solution is:", $solutionStore);
 </script>
 
-<h1 class="font-bold text-center py-10">M A S T E R M I N D</h1>
-<div class="bg-slate-100 max-w-xs sm:max-w-screen-sm mx-auto border-2 border-slate-900">
-	<div class="space-y-4 p-4">
-		<div>
-			<label for="attempts-slider">attempts:</label>
-			<input
-				class=""
-				type="range"
-				id="attempts-slider"
-				min="1"
-				max="12"
-				step="1"
-				value={numberOfAttempts}
-				on:input={updateAttempts}
-			/>
-			<input
-				type="number"
-				id="attempts-input"
-				min="1"
-				max="12"
-				value={numberOfAttempts}
-				on:input={updateAttempts}
-			/>
-		</div>
-
-		<div>
-			<label for="colours-slider">colours:</label>
-			<input
-				type="range"
-				id="colours-slider"
-				min="2"
-				max="9"
-				step="1"
-				value={numberOfColours}
-				on:input={updateNumberOfColours}
-			/>
-			<input
-				type="number"
-				id="colours-input"
-				min="2"
-				max="9"
-				value={numberOfColours}
-				on:input={updateNumberOfColours}
-			/>
-		</div>
-
+<h1 class="font-bold text-center text-xl py-10">M A S T E R M I N D</h1>
+<div class="h-48 bg-amber-100" />
+<div class="bg-orange-700 max-w-xs sm:max-w-screen-sm mx-auto border-2 border-slate-900">
+	<Settings
+		{numberOfAttempts}
+		{numberOfColours}
+		{updateNumberOfColours}
+		{updateAttempts}
+		{resetGame}
+	/>
+	<div
+		class="flex justify-center items-center p-4 gap-2 bg-green-500 border-black border-2 {isOpen
+			? 'border-b-0'
+			: ''}"
+	>
+		<h2 class="font-bold text-2xl">Play</h2>
 		<button
-			class="h-2/4 w-3/4 border-4"
-			on:click={() => {
-				boardState = generateBoardState(numberOfAttempts);
-				game = 'playing';
-				solutionStore.set(generateRandomSolution());
-			}}>Try again</button
+			class="h-6 w-6 rounded-full bg-slate-400 flex justify-center align-center mt-1"
+			on:click={toggleOpen}
+			>{#if isOpen}
+				<span class="leading-tight">&#x25B2;</span> <!-- Up arrow when isOpen is true -->
+			{:else}
+				<span class="">&#x25BC;</span> <!-- Down arrow when isOpen is false -->
+			{/if}</button
 		>
 	</div>
-
-	{#each boardState as row (row.id)}
-		<Row {row} on:colourChange={handleColourChange} on:updateResponse={handleUpdateResponse} />
-	{/each}
-
+	{#if isOpen}
+		<div in:slide={{ duration: 500 }} out:slide={{ duration: 350 }}>
+			{#each boardState as row (row.id)}
+				<Row {row} on:colourChange={handleColourChange} on:updateResponse={handleUpdateResponse} />
+			{/each}
+		</div>
+	{:else}
+		<div />
+	{/if}
+	<HowToPlay />
 	{#if game !== 'playing'}
 		<div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
 			<div class="bg-white rounded-lg p-4">
 				<button class="absolute top-4 right-4" on:click={() => (game = 'playing')}>X</button>
 				<div class="h-48 bg-pink-300 flex flex-col justify-center items-center space-y-4">
-					<span> {game === 'won' ? 'congratz' : 'fu'}</span>
+					<span> {game === 'won' ? 'Well done!' : "You're out of attempts"}</span>
 					<span> The solution was:</span>
 					<div class="flex gap-4 items-center">
 						{#each $solutionStore as pegColour, index (index)}
@@ -242,60 +237,8 @@
 			</div>
 		</div>
 	{/if}
-	<div class="flex justify-between">
-		<h1>hei</h1>
-		<a
-			href="https://www.wikihow.com/Play-Mastermind"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="underline"
-		>
-			how to play Mastermind
-		</a>
-	</div>
 </div>
 
-<div class="h-96 bg-amber-100 flex justify-center items-end w-full"><p>Craated by me</p></div>
-
-<style>
-	input[type='number']::-webkit-inner-spin-button,
-	input[type='number']::-webkit-outer-spin-button {
-		-webkit-appearance: none;
-		margin: 0;
-	}
-
-	input[type='number'] {
-		-moz-appearance: textfield;
-		appearance: textfield;
-	}
-	input[type='range'] {
-		appearance: none;
-		-webkit-appearance: none;
-		width: 100%;
-		max-width: 200px;
-		height: 15px;
-		border-radius: 5px;
-		background: #d3d3d3;
-		outline: none;
-		opacity: 0.7;
-		-webkit-transition: 0.2s;
-		transition: opacity 0.2s;
-	}
-	input[type='range']::-webkit-slider-thumb {
-		-webkit-appearance: none;
-		appearance: none;
-		width: 2.25rem;
-		height: 2.25rem;
-		border-radius: 50%;
-		background: #04aa6d;
-		cursor: pointer;
-	}
-
-	input[type='range']::-moz-range-thumb {
-		width: 25px;
-		height: 25px;
-		border-radius: 50%;
-		background: #04aa6d;
-		cursor: pointer;
-	}
-</style>
+<div class="h-96 bg-amber-100" />
+<div class="h-96 bg-amber-100" />
+<div class="h-48 bg-amber-100" />

@@ -30,7 +30,6 @@
 	$: empty = 4 - (correctPlacement + correctColour);
 
 	const makeAttempt = () => {
-		/* empty = 4; */
 		let newCorrectPlacement = 0;
 		let newCorrectColour = 0;
 		let solutionCopy = [...$solutionStore];
@@ -98,7 +97,6 @@
 		>
 			{#each makeArray(correctPlacement) as _}
 				<div
-					in:fade={{ delay: 500, duration: 2500 }}
 					class="h-4 w-4 mx-4 sm:h-7 sm:w-7 bg-red-600 rounded-full flex justify-center items-center border-2 sm:border-4 border-slate-900"
 				>
 					<div class="h-3 w-3 sm:border-2 border-slate-800 rounded-full bg-red-700" />
@@ -107,7 +105,6 @@
 
 			{#each makeArray(correctColour) as _}
 				<div
-					in:fade={{ delay: 500, duration: 2500 }}
 					class="h-4 w-4 mx-4 sm:h-7 sm:w-7 bg-slate-100 rounded-full flex justify-center items-center border-2 sm:border-4 border-slate-900"
 				>
 					<div class="h-3 w-3 sm:border-2 border-slate-800 rounded-full bg-slate-200" />
@@ -126,12 +123,12 @@
 		<div class="h-full w-full flex justify-center items-center pl-1 sm:pr-4">
 			<button
 				class="h-2/4 w-3/4 border-4 {notEnoughPlacements
-					? 'bg-pink-400 text-slate-400 border-slate-500'
-					: 'bg-pink-700 border-black'}"
+					? 'bg-green-500 text-slate-600 border-slate-500'
+					: 'bg-green-500 border-black'}"
 				on:click={makeAttempt}
 				disabled={notEnoughPlacements}
 			>
-				<div class="flex flex-col items-center font-bold">check</div>
+				<div class="flex flex-col items-center font-bold">Check</div>
 			</button>
 		</div>
 	{/if}

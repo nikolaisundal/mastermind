@@ -49,7 +49,7 @@
 				transition:slide={{ delay: 50, duration: 300, axis: 'x', easing: quintOut }}
 				class=" w-0 h-0 z-40
 		border-l-[10px] border-l-transparent
-		border-b-[20px] border-b-white
+		border-b-[20px] border-b-slate-200
 		border-r-[10px] border-r-transparent absolute top-full -mt-4"
 			/>{/if}
 	</div>
@@ -61,8 +61,9 @@
 {/if}
 {#if isSelected}
 	<div
-		transition:fade={{ duration: 200 }}
-		class="absolute top-24 left-0 w-full z-10 bg-slate-200 grid grid-cols-3 gap-x-2"
+		in:fade={{ duration: 150 }}
+		out:fade={{ duration: 100 }}
+		class="absolute top-20 sm:top-24 left-0 w-full z-10 bg-slate-200 border-4 border-black grid grid-cols-3 gap-x-2"
 	>
 		{#each coloursWithinRange as colourOption}
 			<div class="flex justify-center p-4">
