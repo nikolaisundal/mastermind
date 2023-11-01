@@ -24,7 +24,9 @@
 		'bg-teal-500'
 	];
 
-	let isOpen = true;
+	let isOpen = false;
+
+	let quickStartVisible = true;
 
 	let game: string = 'playing';
 
@@ -161,12 +163,19 @@
 
 	const toggleOpen = () => {
 		isOpen = !isOpen;
-		const section = document.getElementById('targetSection');
-		if (section && isOpen) {
-			section.scrollIntoView({ behavior: 'smooth' });
-		} else {
-			console.error('Element with id "targetSection" not found');
-		}
+
+		setTimeout(() => {
+			const section = document.getElementById('targetSection');
+			if (section && isOpen) {
+				section.scrollIntoView({ behavior: 'smooth', block: 'end' });
+			} else {
+				console.error('Element with id "targetSection" not found');
+			}
+		}, 500);
+	};
+
+	const setQuickStartInvisible = () => {
+		quickStartVisible = false;
 	};
 
 	$: console.log("Since you're a web dev cheating is allowed. The solution is:", $solutionStore);
@@ -182,30 +191,45 @@
 		{updateAttempts}
 		{resetGame}
 	/>
-	<div
-		class="flex justify-center items-center p-4 gap-2 bg-green-500 border-black border-2 {isOpen
+	<button
+		on:click={toggleOpen}
+		class="flex justify-center items-center w-full p-4 gap-2 bg-green-500 border-black border-2 {isOpen
 			? 'border-b-0'
 			: ''}"
 	>
 		<h2 class="font-bold text-2xl">Play</h2>
-		<button
-			class="h-6 w-6 rounded-full bg-slate-400 flex justify-center align-center mt-1"
-			on:click={toggleOpen}
-			>{#if isOpen}
+		<div class="h-6 w-6 rounded-full bg-slate-400 flex justify-center align-center mt-1">
+			{#if isOpen}
 				<span class="leading-tight">&#x25B2;</span> <!-- Up arrow when isOpen is true -->
 			{:else}
 				<span class="">&#x25BC;</span> <!-- Down arrow when isOpen is false -->
-			{/if}</button
-		>
-	</div>
+			{/if}
+		</div>
+	</button>
 	{#if isOpen}
 		<div in:slide={{ duration: 500 }} out:slide={{ duration: 350 }}>
 			{#each boardState as row (row.id)}
-				<Row {row} on:colourChange={handleColourChange} on:updateResponse={handleUpdateResponse} />
+				<Row
+					{quickStartVisible}
+					{setQuickStartInvisible}
+					{row}
+					on:colourChange={handleColourChange}
+					on:updateResponse={handleUpdateResponse}
+				/>
 			{/each}
 		</div>
-	{:else}
-		<div />
+		{#if quickStartVisible}
+			<div in:fade={{ duration: 300 }} out:fade={{ duration: 50 }} class="relative">
+				<div
+					id="targetSection"
+					class="h-36 w-full bg-slate-200 border-2 border-black absolute bottom- right-0 z-40 flex flex-col text-center p-4 space-y-2"
+				>
+					<h2 class="font-bold text-xl">Quick start:</h2>
+					<li>Place four pegs in the slots above</li>
+					<li>Press check to get the response</li>
+				</div>
+			</div>
+		{/if}
 	{/if}
 	<HowToPlay />
 	{#if game !== 'playing'}

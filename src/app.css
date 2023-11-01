@@ -2,10 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+	font-family: 'Geist'; /* You can name it whatever you want */
+	src: url('/fonts/Geist-Regular.otf') format('opentype');
+	font-weight: normal;
+	font-style: normal;
+	/* This ensures text remains visible during webfont load */
+}
+
 body {
 	@apply bg-amber-100;
+	font-family: 'Geist', sans-serif;
 	width: 100%;
 	height: 100vh;
+
+	@apply text-slate-800;
 }
 
 * {

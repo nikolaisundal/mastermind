@@ -4,7 +4,7 @@
 	export let updateNumberOfColours: (event: Event) => void;
 	export let updateAttempts: (event: Event) => void;
 	export let resetGame: () => void;
-	let isOpen = true;
+	let isOpen = false;
 
 	import { slide, fade } from 'svelte/transition';
 
@@ -14,29 +14,32 @@
 </script>
 
 <div class="bg-orange-700 border-2 border-black">
-	<div
+	<button
+		on:click={toggleOpen}
 		out:fade={{ duration: 100 }}
-		class="flex justify-center items-center gap-2 bg-green-500 {isOpen
+		class="flex justify-center w-full items-center gap-2 bg-green-500 {isOpen
 			? 'border-b-2'
 			: ''} border-black p-4"
 	>
 		<h2 class="font-bold text-2xl">Settings</h2>
-		<button
-			class="h-6 w-6 rounded-full bg-slate-400 flex justify-center align-center mt-1"
-			on:click={toggleOpen}
-			>{#if isOpen}
+		<div class="h-6 w-6 rounded-full bg-slate-400 flex justify-center align-center mt-1">
+			{#if isOpen}
 				<span class="leading-tight">&#x25B2;</span> <!-- Up arrow when isOpen is true -->
 			{:else}
 				<span class="">&#x25BC;</span> <!-- Down arrow when isOpen is false -->
-			{/if}</button
-		>
-	</div>
+			{/if}
+		</div>
+	</button>
 
 	{#if isOpen}
-		<div in:slide={{ duration: 400 }} out:slide={{ duration: 200 }} class="space-y-4 p-4">
+		<div
+			in:slide={{ duration: 400 }}
+			out:slide={{ duration: 200 }}
+			class="space-y-6 p-4 bg-orange-300"
+		>
 			<div class="flex flex-col sm:flex-row">
-				<label class="font-bold w-24 bg-white" for="attempts-slider">Attempts:</label>
-				<div class="flex gap-2">
+				<label class="font-bold w-24" for="attempts-slider">Attempts:</label>
+				<div class="flex gap-2 items-center">
 					<input
 						class=""
 						type="range"
@@ -50,6 +53,7 @@
 					<input
 						type="number"
 						id="attempts-input"
+						class="w-10 text-center border-2 border-black"
 						min="1"
 						max="12"
 						value={numberOfAttempts}
@@ -58,8 +62,8 @@
 				</div>
 			</div>
 			<div class="flex flex-col sm:flex-row">
-				<label class="font-bold w-24 bg-white" for="colours-slider">colours:</label>
-				<div class="flex gap-2">
+				<label class="font-bold w-24" for="colours-slider">Colours:</label>
+				<div class="flex gap-2 items-center">
 					<input
 						type="range"
 						id="colours-slider"
@@ -71,6 +75,7 @@
 					/>
 					<input
 						type="number"
+						class="w-10 text-center border-2 border-black"
 						id="colours-input"
 						min="2"
 						max="9"
@@ -79,10 +84,11 @@
 					/>
 				</div>
 			</div>
-			<button class="h-10 w-40 border-4 font-bold" on:click={resetGame}>Reset game</button>
+			<br />
+			<button class="h-10 w-40 border-4 border-black bg-red-600 font-bold" on:click={resetGame}
+				>Reset game</button
+			>
 		</div>
-	{:else}
-		<div />
 	{/if}
 </div>
 
@@ -106,9 +112,6 @@
 		border-radius: 5px;
 		background: #d3d3d3;
 		outline: none;
-		opacity: 0.7;
-		-webkit-transition: 0.2s;
-		transition: opacity 0.2s;
 	}
 	input[type='range']::-webkit-slider-thumb {
 		-webkit-appearance: none;
@@ -116,7 +119,8 @@
 		width: 2.25rem;
 		height: 2.25rem;
 		border-radius: 50%;
-		background: #04aa6d;
+		background: #22c55e;
+		opacity: 0.9;
 		cursor: pointer;
 	}
 
@@ -124,7 +128,7 @@
 		width: 25px;
 		height: 25px;
 		border-radius: 50%;
-		background: #04aa6d;
+		background: #22c55e;
 		cursor: pointer;
 	}
 </style>

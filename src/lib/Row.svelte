@@ -6,12 +6,15 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let row: RowData;
+	export let quickStartVisible;
+	export let setQuickStartInvisible: () => void;
 
 	const dispatch = createEventDispatcher();
 
 	let selectedPegId: null | string = null;
 
 	function toggleSelect(id: null | string) {
+		setQuickStartInvisible();
 		selectedPegId = selectedPegId === id ? null : id;
 	}
 	let notEnoughPlacements: boolean;
@@ -69,9 +72,11 @@
 <div
 	class="{row.active
 		? 'bg-orange-500'
-		: 'bg-orange-700'} flex gap-6 sm:gap h-20 sm:h-24 border-2 border-slate-800"
+		: 'bg-orange-700'} flex gap-4 sm:gap-6 h-20 sm:h-24 border-2 border-slate-800"
 >
-	<header class="sm:block hidden font-bold">guesses:</header>
+	<div class="sm:block hidden font-bold">
+		<header>Guess:</header>
+	</div>
 
 	<div class="flex gap-4 items-center relative pl-4">
 		{#each row.pegs as peg (peg.id)}
@@ -88,7 +93,7 @@
 		{/each}
 	</div>
 
-	<header class="sm:block hidden font-bold">responses:</header>
+	<header class="sm:block hidden font-bold">Response:</header>
 
 	{#if !row.active}
 		<div
@@ -120,7 +125,7 @@
 			{/each}
 		</div>
 	{:else}
-		<div class="h-full w-full flex justify-center items-center pl-1 sm:pr-4">
+		<div class="h-full w-[88px] sm:w-[120px] flex justify-center items-center">
 			<button
 				class="h-2/4 w-3/4 border-4 {notEnoughPlacements
 					? 'bg-green-500 text-slate-600 border-slate-500'
