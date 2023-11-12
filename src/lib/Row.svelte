@@ -6,7 +6,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let row: RowData;
-	export let quickStartVisible;
+
 	export let setQuickStartInvisible: () => void;
 
 	const dispatch = createEventDispatcher();
@@ -51,7 +51,7 @@
 			}
 		});
 
-		pegsCopy.forEach((peg: PegType, i: number) => {
+		pegsCopy.forEach((peg: PegType) => {
 			let colourMatchIndex = solutionCopy.indexOf(peg.colour);
 			if (colourMatchIndex !== -1) {
 				newCorrectColour++;
@@ -69,13 +69,14 @@
 	};
 </script>
 
+<!-- orange-700 -->
 <div
 	class="{row.active
 		? 'bg-orange-500'
-		: 'bg-orange-700'} flex gap-4 sm:gap-6 h-20 sm:h-24 border-2 border-slate-800"
+		: 'bg-[#a5583a]'}  flex gap-4 sm:gap-6 h-20 sm:h-24 border-2 border-slate-800"
 >
-	<div class="sm:block hidden font-bold">
-		<header>Guess:</header>
+	<div class="sm:flex items-center hidden font-bold">
+		<header class="pl-1">Guess:</header>
 	</div>
 
 	<div class="flex gap-4 items-center relative pl-4">
@@ -93,7 +94,7 @@
 		{/each}
 	</div>
 
-	<header class="sm:block hidden font-bold">Response:</header>
+	<header class="sm:flex items-center hidden font-bold">Response:</header>
 
 	{#if !row.active}
 		<div

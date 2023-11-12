@@ -145,8 +145,8 @@
 			settings.numberOfAttempts = value;
 			return settings;
 		});
-		solutionStore.set(generateRandomSolution());
-		boardState = generateBoardState(value);
+
+		resetGame();
 	}
 
 	const updateNumberOfColours = (event: Event) => {
@@ -157,8 +157,8 @@
 			settings.numberOfColours = value;
 			return settings;
 		});
-		solutionStore.set(generateRandomSolution());
-		boardState = generateBoardState(value);
+
+		resetGame();
 	};
 
 	const toggleOpen = () => {
@@ -210,7 +210,6 @@
 		<div in:slide={{ duration: 500 }} out:slide={{ duration: 350 }}>
 			{#each boardState as row (row.id)}
 				<Row
-					{quickStartVisible}
 					{setQuickStartInvisible}
 					{row}
 					on:colourChange={handleColourChange}
