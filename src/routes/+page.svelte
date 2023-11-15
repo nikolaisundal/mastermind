@@ -226,7 +226,7 @@
 						<li class="py-1">-Place four pegs in the slots above.</li>
 						<li class="py-1">-Press check to get the response.</li>
 						<li class="py-1">-White peg: Correct colour.</li>
-						<li class="py-1">-Red peg: Correct colout and placement.</li>
+						<li class="py-1">-Red peg: Correct colour and placement.</li>
 						<li class="py-1">-No peg: Colour not in solution.</li>
 					</ul>
 				</div>
