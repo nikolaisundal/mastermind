@@ -13,7 +13,7 @@
 		'bg-purple-600',
 		'bg-slate-500',
 		'bg-pink-500',
-		'bg-indigo-500',
+		'bg-slate-800',
 		'bg-teal-500'
 	];
 
@@ -68,7 +68,7 @@
 		{#each coloursWithinRange as colourOption}
 			<div class="flex justify-center p-4">
 				<button
-					class=" h-10 w-10 hover:border-2 hover:border-black flex flex-col items-center"
+					class=" h-10 w-10 hover:scale-125 hover:border-black hover:shadow-md flex flex-col items-center"
 					on:click={(e) => {
 						selectColour(colourOption);
 						toggleSelect(null);
@@ -81,9 +81,3 @@
 		{/each}
 	</div>
 {/if}
-
-<style>
-	.peg-shape {
-		border-radius: 50% 50% 0 0;
-	}
-</style>

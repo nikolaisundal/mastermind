@@ -7,7 +7,7 @@ export type Colour =
 	| 'bg-slate-500'
 	| 'bg-orange-200'
 	| 'bg-pink-500'
-	| 'bg-indigo-500'
+	| 'bg-slate-800'
 	| 'bg-teal-500'
 	| 'deleted';
 

@@ -8,6 +8,20 @@
 
 	import { slide, fade } from 'svelte/transition';
 
+	const selectTextOnFocus = (node: HTMLInputElement) => {
+		const handleFocus = (_event: FocusEvent) => {
+			node && typeof node.select === 'function' && node.select();
+		};
+
+		node.addEventListener('focus', handleFocus);
+
+		return {
+			destroy() {
+				node.removeEventListener('focus', handleFocus);
+			}
+		};
+	};
+
 	const toggleOpen = () => {
 		isOpen = !isOpen;
 	};
@@ -22,11 +36,13 @@
 			: ''} border-black p-4"
 	>
 		<h2 class="font-bold text-2xl">Settings</h2>
-		<div class="h-6 w-6 rounded-full bg-slate-400 flex justify-center align-center mt-1">
+		<div
+			class="h-7 w-7 rounded-full bg-slate-400 flex justify-center items-center border-2 border-black"
+		>
 			{#if isOpen}
-				<span class="leading-tight">&#x25B2;</span> <!-- Up arrow when isOpen is true -->
+				<span class="mb-[1px]">&#x25B2;</span>
 			{:else}
-				<span class="">&#x25BC;</span> <!-- Down arrow when isOpen is false -->
+				<span class="mt-[1px]">&#x25BC;</span>
 			{/if}
 		</div>
 	</button>
@@ -57,6 +73,7 @@
 						min="1"
 						max="12"
 						value={numberOfAttempts}
+						use:selectTextOnFocus
 						on:input={updateAttempts}
 					/>
 				</div>
@@ -80,6 +97,7 @@
 						min="2"
 						max="9"
 						value={numberOfColours}
+						use:selectTextOnFocus
 						on:input={updateNumberOfColours}
 					/>
 				</div>

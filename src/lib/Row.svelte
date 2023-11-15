@@ -2,7 +2,7 @@
 	import type { RowData, PegType } from '../typeDefinitions/boardState';
 	import Peg from './Peg.svelte';
 	import { solutionStore } from '$lib/solutionStore';
-	import { slide, fade } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
 
 	export let row: RowData;
@@ -39,7 +39,7 @@
 
 		let pegsCopy = JSON.parse(JSON.stringify(row.pegs));
 		if (notEnoughPlacements) {
-			return console.log('place four pegsz');
+			return console.log('place four pegs');
 		}
 
 		pegsCopy.forEach((peg: PegType, index: number) => {

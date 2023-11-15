@@ -20,7 +20,7 @@
 		'bg-purple-600',
 		'bg-slate-500',
 		'bg-pink-500',
-		'bg-indigo-500',
+		'bg-slate-800',
 		'bg-teal-500'
 	];
 
@@ -39,6 +39,7 @@
 		numberOfAttempts = $settingsStore.numberOfAttempts;
 		numberOfColours = $settingsStore.numberOfColours;
 		boardState = generateBoardState(numberOfAttempts);
+		solutionStore.set(generateRandomSolution());
 	}
 
 	const generateRandomSolution = (): Colour[] => {
@@ -53,8 +54,6 @@
 
 		return solution;
 	};
-
-	solutionStore.set(generateRandomSolution());
 
 	function generateRow(isActive: boolean) {
 		return {
@@ -79,8 +78,6 @@
 			return generateRow(isActive);
 		});
 	}
-
-	boardState = generateBoardState(numberOfAttempts);
 
 	/* solutionStore.set(['bg-blue-700', 'bg-blue-700', 'bg-red-600', 'bg-green-600']); */
 	/*  blue, grey, green, red  */
@@ -129,16 +126,15 @@
 	};
 
 	const resetGame = () => {
+		solutionStore.set(generateRandomSolution());
 		boardState = generateBoardState(numberOfAttempts);
 		game = 'playing';
-		solutionStore.set(generateRandomSolution());
 	};
 
 	function updateAttempts(event: Event) {
-		const input = event.target as HTMLInputElement; // Type assertion for better type safety
-		let value = +input.value; // Convert string to number
+		const input = event.target as HTMLInputElement;
+		let value = +input.value;
 
-		// Clamp the value to the range 1 to 12
 		value = Math.max(1, Math.min(value, 12));
 
 		settingsStore.update((settings) => {
@@ -167,7 +163,7 @@
 		setTimeout(() => {
 			const section = document.getElementById('targetSection');
 			if (section && isOpen) {
-				section.scrollIntoView({ behavior: 'smooth', block: 'end' });
+				section.scrollIntoView({ behavior: 'smooth', block: 'center' });
 			} else {
 				console.error('Element with id "targetSection" not found');
 			}
@@ -198,11 +194,13 @@
 			: ''}"
 	>
 		<h2 class="font-bold text-2xl">Play</h2>
-		<div class="h-6 w-6 rounded-full bg-slate-400 flex justify-center align-center mt-1">
+		<div
+			class="h-7 w-7 rounded-full bg-slate-400 flex justify-center items-center border-2 border-black"
+		>
 			{#if isOpen}
-				<span class="leading-tight">&#x25B2;</span> <!-- Up arrow when isOpen is true -->
+				<span class="mb-[1px]">&#x25B2;</span>
 			{:else}
-				<span class="">&#x25BC;</span> <!-- Down arrow when isOpen is false -->
+				<span class="mt-[1px]">&#x25BC;</span>
 			{/if}
 		</div>
 	</button>
@@ -221,11 +219,16 @@
 			<div in:fade={{ duration: 300 }} out:fade={{ duration: 50 }} class="relative">
 				<div
 					id="targetSection"
-					class="h-36 w-full bg-slate-200 border-2 border-black absolute bottom- right-0 z-40 flex flex-col text-center p-4 space-y-2"
+					class="h-96 sm:h-64 w-full bg-slate-200 border-2 border-black absolute top-0 right-0 z-40 flex flex-col text-center p-4 space-y-2"
 				>
 					<h2 class="font-bold text-xl">Quick start:</h2>
-					<li>Place four pegs in the slots above</li>
-					<li>Press check to get the response</li>
+					<ul class="w-2/3 sm:w-1/2 mx-auto text-left">
+						<li class="py-1">-Place four pegs in the slots above.</li>
+						<li class="py-1">-Press check to get the response.</li>
+						<li class="py-1">-White peg: Correct colour.</li>
+						<li class="py-1">-Red peg: Correct colout and placement.</li>
+						<li class="py-1">-No peg: Colour not in solution.</li>
+					</ul>
 				</div>
 			</div>
 		{/if}
@@ -233,10 +236,12 @@
 	<HowToPlay />
 	{#if game !== 'playing'}
 		<div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-			<div class="bg-white rounded-lg p-4">
-				<button class="absolute top-4 right-4" on:click={() => (game = 'playing')}>X</button>
-				<div class="h-48 bg-pink-300 flex flex-col justify-center items-center space-y-4">
-					<span> {game === 'won' ? 'Well done!' : "You're out of attempts"}</span>
+			<div class="bg-orange-300 rounded-lg p-4 max-w-xs border-4 border-black">
+				<button class="absolute top-4 right-4 text-4xl" on:click={() => (game = 'playing')}
+					>&times;</button
+				>
+				<div class="h-48 flex flex-col justify-center items-center space-y-4">
+					<span> {game === 'won' ? 'Well done!' : "You're out of attempts!"}</span>
 					<span> The solution was:</span>
 					<div class="flex gap-4 items-center">
 						{#each $solutionStore as pegColour, index (index)}
@@ -246,9 +251,14 @@
 							/>
 						{/each}
 					</div>
-					<div class="w-32 bg-purple-700 flex justify-between">
-						<button on:click={() => (game = 'playing')}>Ok</button>
+					<div class="sm:h-10" />
+					<div class="w-full flex justify-evenly gap-2">
 						<button
+							class="bg-green-500 border-4 border-black w-2/5"
+							on:click={() => (game = 'playing')}>OK</button
+						>
+						<button
+							class="bg-green-500 border-4 border-black w-2/5"
 							on:click={() => {
 								boardState = generateBoardState(numberOfAttempts);
 								game = 'playing';
