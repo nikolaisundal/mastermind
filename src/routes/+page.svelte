@@ -164,9 +164,9 @@
 			const section = document.getElementById('targetSection');
 			if (section && isOpen) {
 				section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-			} else {
+			} /*  else {
 				console.error('Element with id "targetSection" not found');
-			}
+			} */
 		}, 500);
 	};
 
@@ -177,8 +177,8 @@
 	$: console.log("Since you're a web dev cheating is allowed. The solution is:", $solutionStore);
 </script>
 
-<h1 class="font-bold text-center text-xl py-10">M A S T E R M I N D</h1>
-<div class="h-48 bg-amber-100" />
+<h1 class="font-bold text-center text-xl my-20 sm:my-28">M A S T E R M I N D</h1>
+<div class="h-20 sm:h-40 bg-amber-100" />
 <div class="bg-orange-700 max-w-xs sm:max-w-screen-sm mx-auto border-2 border-slate-900">
 	<Settings
 		{numberOfAttempts}

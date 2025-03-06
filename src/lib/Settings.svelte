@@ -103,7 +103,7 @@
 				</div>
 			</div>
 			<br />
-			<button class="h-10 w-40 border-4 border-black bg-red-600 font-bold" on:click={resetGame}
+			<button class="h-10 w-40 border-4 border-black bg-red-500 font-bold" on:click={resetGame}
 				>Reset game</button
 			>
 		</div>
